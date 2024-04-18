@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+    struct node *prev;
+};
+
+struct node *head, *tail;
+int count = 0; // declare count globally;for counting the nodes
+
+void create()
+{
+    head = 0;
+    int choice = 1;
+
+    while (choice)
+    {
+        struct node *newnode;
+        newnode = (struct node *)malloc(sizeof(struct node));
+        printf("Enter Data:\n");
+        scanf("%d", &newnode->data);
+        newnode->prev = 0;
+        newnode->next = 0;
+
+        if (head == 0)
+        {
+            head = tail = newnode;
+        }
+        else
+        {
+            tail->next = newnode;
+            newnode->prev = tail;
+            tail = newnode;
+        }
+
+        printf("Do you want to continue (0, 1)?\n");
+        scanf("%d", &choice);
+        count++;
+    }
+}
+
+void display()
+{
+    struct node *tail;
+    tail = head;
+    while (tail != 0)
+    {
+        printf("%d ", tail->data); // Add a space after %d; making the output more readable
+        tail = tail->next;
+    }
+}
+
+void InsertAfterPosition()
+{
+    int pos;
+    int i = 1;
+    printf("\nEnter position:\n");
+    scanf("%d", &pos);
+
+    if (pos < 1 || pos > count)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+    else
+    {
+    struct node *newnode, *temp;
+    temp = head;
+    newnode = (struct node *)malloc(sizeof(struct node));
+    printf("Enter data:\n");
+    scanf("%d", &newnode->data);
+    newnode->prev = 0;
+    newnode->next = 0;
+
+    while (i < pos)//****
+    {
+        temp = temp->next;
+        i++;
+    }
+
+    newnode->prev = temp;
+    newnode->next = temp->next;
+    temp->next = newnode;
+    newnode->next->prev = newnode;
+    }
+    
+   
+}
+
+int main()
+{
+    create();
+    display();
+    InsertAfterPosition();
+    printf("After Insert After Position:\n");
+    display();
+    return 0;
+}
